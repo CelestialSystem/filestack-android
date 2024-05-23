@@ -1,6 +1,7 @@
-plugins {
+//TODO: Removal of JCenter Repository related plugin
+/*plugins {
     id 'com.jfrog.bintray' version '1.7.3'
-}
+}*/
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
@@ -10,19 +11,20 @@ version = '6.0.0'
 project.archivesBaseName = 'filestack-android'
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 33
+        targetSdkVersion 34
         multiDexEnabled = true
+        android.buildFeatures.buildConfig true
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         vectorDrawables {
             useSupportLibrary true
         }
-
+        namespace 'com.filestack.android'
         resourcePrefix 'filestack__'
         buildConfigField "String", "FILESTACK_ANDROID_VERSION", "\"$version\""
 
@@ -33,10 +35,14 @@ android {
             consumerProguardFile 'consumer-proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
 }
 
 dependencies {
-    api 'com.filestack:filestack-java:0.9.0'
+    implementation 'com.filestack:filestack-java:0.9.0'
 
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
@@ -44,17 +50,18 @@ dependencies {
     
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    implementation 'androidx.test.ext:junit:1.1.5'
 
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.2'
     testImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
+    archiveClassifier.set("sources")
 }
 
 task javadoc(type: Javadoc) {
@@ -67,12 +74,12 @@ task javadoc(type: Javadoc) {
 // Add dependencies to javadoc classpath so annotations work
 afterEvaluate {
     javadoc.classpath += files(android.libraryVariants.collect { variant ->
-        variant.javaCompiler.classpath.files
+        variant.getJavaCompileProvider().get().classpath.files
     })
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
+    archiveClassifier.set('javadoc')
     from javadoc.destinationDir
 }
 
@@ -81,7 +88,8 @@ artifacts {
     archives sourcesJar
 }
 
-bintray {
+//TODO: Removal of JCenter Repository related plugin configuration
+/*bintray {
     user = project.hasProperty('bintrayUser') ? project.property('bintrayUser')
             : System.getenv('BINTRAY_USER')
     key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey')
@@ -110,4 +118,4 @@ bintray {
             released = new Date()
         }
     }
-}
+}*/

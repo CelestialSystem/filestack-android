@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
+import android.util.Log;
+import android.widget.TextView;
+
 import androidx.core.content.FileProvider;
 import androidx.core.content.MimeTypeFilter;
-import android.widget.TextView;
 
 import com.filestack.Client;
 import com.filestack.Config;
@@ -211,6 +213,7 @@ public class Util {
 
         client = new Client(overridenConfig);
         client.setSessionToken(sessionToken);
+        Log.d("Init in progress: ","overridenConfig: " +  client + ", sessionToken : "+ sessionToken);
     }
 
     public static Client getClient() {

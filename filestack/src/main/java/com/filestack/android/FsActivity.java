@@ -174,8 +174,10 @@ public class FsActivity extends AppCompatActivity implements
         if (savedInstanceState == null) {
             Config config = (Config) intent.getSerializableExtra(FsConstants.EXTRA_CONFIG);
             String sessionToken = preferences.getString(PREF_SESSION_TOKEN, null);
+            Log.d("Client Iniatialization:","Before Filestack Client Iniatialization ----------");
             Util.initializeClient(config, sessionToken);
 
+            Log.d("Client Iniatialization:","After Filestack Client Iniatialization +++++++++++");
             Util.getSelectionSaver().clear();
 
             selectedSource = sources.get(0);
@@ -378,6 +380,7 @@ public class FsActivity extends AppCompatActivity implements
             uploadIntent.putExtra(FsConstants.EXTRA_STORE_OPTS, storeOpts);
             uploadIntent.putExtra(FsConstants.EXTRA_SELECTION_LIST, selections);
             ContextCompat.startForegroundService(this, uploadIntent);
+            Log.d("Upload Sel Service: ","Upload action in context of SyncAdapter !!!*********");
         }
 
         Intent data = new Intent();
